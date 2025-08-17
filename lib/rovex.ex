@@ -6,7 +6,11 @@ defmodule Rover do
   @world_height 100
 
   def start_link({x, y, d, name}) do
-    GenServer.start_link(__MODULE__, {x, y, d, name}, name: String.to_atom(name))
+    GenServer.start_link(
+      __MODULE__,
+      {x, y, d, name},
+      name: RegistryHelper.create_key(name)
+    )
   end
 
   def init({x, y, d, name}) do
@@ -14,7 +18,7 @@ defmodule Rover do
   end
 
   def get_state(name) do
-    GenServer.call(String.to_atom(name), :get_state)
+    GenServer.call(RegistryHelper.create_key(name), :get_state)
   end
 
   def handle_call(:get_state, _from, state) do

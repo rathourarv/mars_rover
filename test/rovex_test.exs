@@ -4,7 +4,14 @@ defmodule RoverTest do
   test "get_state should return current state" do
     {:ok, _} = Rover.start_link({9, 9, :N, "rover0"})
     {:ok, state} = Rover.get_state("rover0")
-    assert state == {9, 9, :N, 0}
+    assert state == {9, 9, :N}
+  end
+
+  test "go_forward should update rover position" do
+    {:ok, _} = Rover.start_link({0, 0, :N, "rover1"})
+    Rover.go_forward("rover1")
+    {:ok, state} = Rover.get_state("rover1")
+    assert state == {0, 1, :N}
   end
 
   test "handle_cast :go_forward should return updated state" do
